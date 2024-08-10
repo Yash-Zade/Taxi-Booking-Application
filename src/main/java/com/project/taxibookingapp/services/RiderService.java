@@ -4,6 +4,8 @@ import com.project.taxibookingapp.dto.DriverDto;
 import com.project.taxibookingapp.dto.RideDto;
 import com.project.taxibookingapp.dto.RideRequestDto;
 import com.project.taxibookingapp.dto.RiderDto;
+import com.project.taxibookingapp.entities.Rider;
+import com.project.taxibookingapp.entities.User;
 
 import java.util.List;
 
@@ -13,4 +15,5 @@ public interface RiderService {
     DriverDto rateDriver(Long driverId, Double rating);
     RiderDto getMyProfile();
     List<RideDto> getAllRide();
+    Rider createNewRider(User user);
 }

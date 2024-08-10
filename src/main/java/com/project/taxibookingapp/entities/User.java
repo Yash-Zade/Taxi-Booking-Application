@@ -3,10 +3,12 @@ package com.project.taxibookingapp.entities;
 
 import com.project.taxibookingapp.entities.enums.Role;
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.util.Set;
 
 @Entity
+@Data
 @Table(name = "app_user")
 public class User {
     @Id

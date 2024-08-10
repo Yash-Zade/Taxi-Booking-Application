@@ -20,6 +20,8 @@ public class Driver {
     @OneToOne
     private Ride ride;
 
+    private String vehicleId;
+
     @Column(columnDefinition = "Geometry(Point,4362)")
     private Point currentLocation;
 }

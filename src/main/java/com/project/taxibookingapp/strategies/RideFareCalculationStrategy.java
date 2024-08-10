@@ -1,8 +1,10 @@
 package com.project.taxibookingapp.strategies;
 
-import com.project.taxibookingapp.dto.RideRequestDto;
+import com.project.taxibookingapp.entities.RideRequest;
+
+
 
 public interface RideFareCalculationStrategy {
-
-     double calculateFair(RideRequestDto rideRequestDto);
+     double RIDE_FARE_MULTIPLAYER = 10;
+     double calculateFair(RideRequest rideRequest);
 }

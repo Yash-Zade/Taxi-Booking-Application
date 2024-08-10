@@ -3,12 +3,14 @@ package com.project.taxibookingapp.entities;
 import com.project.taxibookingapp.entities.enums.PaymentMethod;
 import com.project.taxibookingapp.entities.enums.RideRequestStatus;
 import jakarta.persistence.*;
+import lombok.Data;
 import org.hibernate.annotations.CurrentTimestamp;
 import org.locationtech.jts.geom.Point;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Data
 public class RideRequest {
 
     @Id
@@ -32,4 +34,6 @@ public class RideRequest {
 
     @Enumerated(EnumType.STRING)
     private RideRequestStatus rideRequestStatus;
+
+    private Double fare;
 }

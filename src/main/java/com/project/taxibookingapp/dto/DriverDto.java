@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class DriverDto {
     private UserDto user;
     private Double rating;
+    private String vehicleId;
 }
