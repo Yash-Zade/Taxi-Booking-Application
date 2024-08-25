@@ -1,16 +1,15 @@
 package com.project.taxibookingapp.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
-@Data
-@Builder
-@NoArgsConstructor
+@Getter
+@Setter
+@ToString
 @AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Rider {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

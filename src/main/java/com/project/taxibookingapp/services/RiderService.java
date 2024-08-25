@@ -6,6 +6,8 @@ import com.project.taxibookingapp.dto.RideRequestDto;
 import com.project.taxibookingapp.dto.RiderDto;
 import com.project.taxibookingapp.entities.Rider;
 import com.project.taxibookingapp.entities.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 
@@ -14,6 +16,7 @@ public interface RiderService {
     RideDto cancelRide(Long rideId);
     DriverDto rateDriver(Long driverId, Double rating);
     RiderDto getMyProfile();
-    List<RideDto> getAllRide();
+    Page<RideDto> getAllRide(PageRequest pageRequest);
     Rider createNewRider(User user);
+    Rider getCurrentRider();
 }

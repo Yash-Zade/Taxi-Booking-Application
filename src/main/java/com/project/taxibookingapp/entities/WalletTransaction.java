@@ -3,12 +3,19 @@ package com.project.taxibookingapp.entities;
 import com.project.taxibookingapp.entities.enums.TransactionMethod;
 import com.project.taxibookingapp.entities.enums.TransactionType;
 import jakarta.persistence.*;
+import lombok.*;
 import org.hibernate.annotations.CurrentTimestamp;
 
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
-public class WalletTransactions {
+@Builder
+public class WalletTransaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,7 +27,7 @@ public class WalletTransactions {
 
     @Enumerated(EnumType.STRING)
     private TransactionMethod transactionMethod;
-    @OneToOne
+    @ManyToOne
     private Ride ride;
 
     private String transactionId;
