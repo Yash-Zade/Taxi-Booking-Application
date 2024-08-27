@@ -3,11 +3,14 @@ package com.project.taxibookingapp.services.Impl;
 import com.project.taxibookingapp.dto.DriverDto;
 import com.project.taxibookingapp.dto.SignupDto;
 import com.project.taxibookingapp.dto.UserDto;
+import com.project.taxibookingapp.entities.Driver;
 import com.project.taxibookingapp.entities.User;
 import com.project.taxibookingapp.entities.enums.Role;
+import com.project.taxibookingapp.exceptions.ResourceNotFoundException;
 import com.project.taxibookingapp.exceptions.RuntimeConflictException;
 import com.project.taxibookingapp.repositories.UserRepository;
 import com.project.taxibookingapp.services.AuthService;
+import com.project.taxibookingapp.services.DriverService;
 import com.project.taxibookingapp.services.RiderService;
 import com.project.taxibookingapp.services.WalletService;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +28,7 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final RiderService riderService;
     private final WalletService walletService;
+    private final DriverService driverService;
 
     @Override
     public String login(String email, String Password) {
@@ -51,7 +55,20 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public DriverDto onboardNewDriver(String userId) {
-        return null;
+    public DriverDto onboardNewDriver(Long userId,String vehicleId) {
+        User user=userRepository.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User not found with id: "+userId));
+        if(user.getRoles().contains(Role.DRIVER)){
+            throw new RuntimeConflictException("user with id: "+userId+" is already a driver");
+        }
+        Driver createDriver=Driver.builder()
+                .user(user)
+                .vehicleId(vehicleId)
+                .rating(0.0)
+                .available(true)
+                .build();
+        user.getRoles().add(Role.DRIVER);
+        userRepository.save(user);
+        Driver savedDriver = driverService.createNewDriver(createDriver);
+        return modelMapper.map(savedDriver, DriverDto.class);
     }
 }

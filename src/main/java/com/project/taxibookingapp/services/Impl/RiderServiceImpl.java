@@ -10,10 +10,7 @@ import com.project.taxibookingapp.entities.enums.RideStatus;
 import com.project.taxibookingapp.exceptions.ResourceNotFoundException;
 import com.project.taxibookingapp.repositories.RideRequestRepository;
 import com.project.taxibookingapp.repositories.RiderRepository;
-import com.project.taxibookingapp.services.DriverService;
-import com.project.taxibookingapp.services.RideRequestService;
-import com.project.taxibookingapp.services.RideService;
-import com.project.taxibookingapp.services.RiderService;
+import com.project.taxibookingapp.services.*;
 import com.project.taxibookingapp.strategies.RideStrategyManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +34,7 @@ public class RiderServiceImpl implements RiderService {
     private final RiderRepository riderRepository;
     private final RideService rideService;
     private final DriverService driverService;
+    private final RatingService ratingService;
 
     @Override
     @Transactional
@@ -76,8 +74,17 @@ public class RiderServiceImpl implements RiderService {
     }
 
     @Override
-    public DriverDto rateDriver(Long driverId, Double rating) {
-        return null;
+    public DriverDto rateDriver(Long rideId, Double rating) {
+        Ride ride=rideService.getRideById(rideId);
+        Rider rider=getCurrentRider();
+        if(!rider.equals(ride.getRider())){
+            throw new RuntimeException("Rider is not the owner of ride");
+        }
+        if(!ride.getRideStatus().equals(RideStatus.ENDED)){
+            throw new RuntimeException("Ride status is not ended hence cannot be Rated, status: "+ride.getRideStatus());
+        }
+
+        return ratingService.rateDriver(ride,rating);
     }
 
     @Override

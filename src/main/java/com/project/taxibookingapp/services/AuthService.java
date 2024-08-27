@@ -7,5 +7,5 @@ import com.project.taxibookingapp.dto.UserDto;
 public interface AuthService {
     String login(String email,String Password);
     UserDto signup(SignupDto signupDto);
-    DriverDto onboardNewDriver(String userId);
+    DriverDto onboardNewDriver(Long userId,String vehicleId);
 }

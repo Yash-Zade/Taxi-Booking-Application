@@ -7,7 +7,7 @@ import org.locationtech.jts.geom.Point;
 @Entity
 @Getter
 @Setter
-@ToString
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Driver {
