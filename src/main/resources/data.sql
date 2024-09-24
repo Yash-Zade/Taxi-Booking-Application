@@ -65,9 +65,9 @@ VALUES
     (20, 'RIDER');
 
 
-INSERT INTO rider (id, user_id, rating)
+INSERT INTO rider (user_id, rating)
 VALUES
-    (1, 1, 4.5);
+    ( 1, 4.5);
 
 
 INSERT INTO driver (user_id, rating, available, current_location)
@@ -92,7 +92,7 @@ VALUES
     (19, 4.5, TRUE, ST_GeomFromText('POINT(79.0718 21.1582)', 4326)), -- Near Pratap Nagar
     (20, 4.1, TRUE, ST_GeomFromText('POINT(79.0710 21.1397)', 4326)); -- Near Bharat Nagar
 
-INSERT INTO wallet (id, user_id, balance)
+INSERT INTO wallet ( user_id, balance)
 VALUES
-    (1,1,100),
-    (2,3,500);
+    (1,100),
+    (3,500);
