@@ -23,7 +23,7 @@ public class DistanceServiceImpl implements DistanceService {
                     .uri(uri)
                     .retrieve()
                     .body(OsrmResponseDto.class);
-            return responseDto.getRoutes().getFirst().getDistance()/1000;
+            return responseDto.getRoutes().get(0).getDistance()/1000;
         }catch (Exception e){
             throw new RuntimeException("Error getting message from OSRM : "+e.getMessage());
         }
