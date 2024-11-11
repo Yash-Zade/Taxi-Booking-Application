@@ -12,6 +12,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -50,6 +51,14 @@ public class WebSecurityConfig {
         source.registerCorsConfiguration("/v3/api-docs/**", configuration);
 
         return source;
+    }
+
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**") // Allow all paths
+                .allowedOrigins("https://cabzilla.up.railway.app") // Allow only specific origins (your Swagger UI)
+                .allowedMethods("GET", "POST", "PUT", "DELETE") // Allow specific HTTP methods
+                .allowedHeaders("*") // Allow all headers
+                .allowCredentials(true); // Allow credentials (e.g., cookies, authorization headers)
     }
 
 }
