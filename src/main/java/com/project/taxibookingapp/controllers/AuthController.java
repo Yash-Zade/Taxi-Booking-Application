@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 
-
+@CrossOrigin(origins = "https://cabzilla.up.railway.app")
 @RestController
 @RequestMapping(path="/auth")
 @RequiredArgsConstructor
