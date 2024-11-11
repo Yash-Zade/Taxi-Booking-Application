@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Arrays;
 
 
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(path="/auth")
 @RequiredArgsConstructor
