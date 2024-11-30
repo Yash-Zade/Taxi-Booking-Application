@@ -1,4 +1,5 @@
-FROM maven:3.9.4-eclipse-temurin-17 AS build
+FROM maven:3.9.4-jdk-17 AS build
+
 WORKDIR /TaxieBookingApp
 
 COPY pom.xml .
@@ -7,7 +8,7 @@ RUN mvn dependency:go-offline
 COPY src ./src
 RUN mvn package -DskipTests
 
-FROM eclipse-temurin:17-jdk-slim
+FROM eclipse-temurin:17-jdk AS runtime
 
 WORKDIR /TaxieBookingApp
 
