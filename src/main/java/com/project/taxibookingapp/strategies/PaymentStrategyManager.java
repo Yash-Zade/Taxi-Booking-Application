@@ -12,14 +12,11 @@ public class PaymentStrategyManager {
     private final WalletPaymentStrategy walletPaymentStrategy;
     private final CashPaymentStrategy cashPaymentStrategy;
 
-    public PaymentStrategy paymentStrategy(PaymentMethod paymentMethod) {
-        switch (paymentMethod) {
-            case WALLET:
-                return walletPaymentStrategy;
-            case CASH:
-                return cashPaymentStrategy;
-            default:
-                throw new IllegalArgumentException("Unknown payment method: " + paymentMethod);
-        }
+    public PaymentStrategy paymentStrategy(PaymentMethod paymentMethod){
+        return switch (paymentMethod) {
+            case WALLET -> walletPaymentStrategy;
+            case CASH -> cashPaymentStrategy;
+            default -> throw new IllegalArgumentException("Unknown payment method: " + paymentMethod);
+        };
     }
 }
