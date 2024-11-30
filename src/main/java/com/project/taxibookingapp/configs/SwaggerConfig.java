@@ -23,7 +23,7 @@ public class SwaggerConfig {
                 .info(new Info().title("CabZilla API").version("1.0").description("API documentation for CabZilla"))
                 .servers(List.of(
                         new Server().url("https://localhost:8080").description("Local server"),
-                        new Server().url("https://cabzilla.up.railway.app").description("Production server")
+                        new Server().url("https://cabzilla.onrender.com").description("Production server")
                 ));
     }
 }
