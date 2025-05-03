@@ -15,7 +15,6 @@ export const AuthProvider = ({ children }) => {
     // Check and refresh token upon mounting
     useEffect(() => {
         checkAndRefreshToken();
-        setupAxiosInterceptors();
     }, [accessToken]);
 
     // Function to check and refresh token if needed
@@ -80,46 +79,6 @@ export const AuthProvider = ({ children }) => {
         } else {
             logout();
         }
-    };
-
-    // Axios Interceptor: Automatically refresh token before requests to protected routes
-    const setupAxiosInterceptors = () => {
-        axios.interceptors.request.use(
-            async (config) => {
-                // Skip adding token to non-protected routes
-                if (!config.headers.Authorization) {
-                    return config;
-                }
-
-                if (!accessToken) {
-                    logout();
-                    throw new Error("No access token found");
-                }
-
-                try {
-                    const decoded = jwtDecode(accessToken);
-                    const now = Date.now() / 1000;
-
-                    if (decoded.exp <= now) {
-                        const newToken = await refreshAccessToken();
-                        if (!newToken) {
-                            logout();
-                            throw new Error("Failed to refresh access token");
-                        }
-                        config.headers.Authorization = `Bearer ${newToken}`;
-                    } else {
-                        config.headers.Authorization = `Bearer ${accessToken}`;
-                    }
-
-                    return config;
-                } catch (error) {
-                    console.error("Error decoding token:", error);
-                    logout();
-                    throw error;
-                }
-            },
-            (error) => Promise.reject(error)
-        );
     };
 
     return (
