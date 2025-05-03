@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { UserCircleIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/solid';
+import { AuthContext } from '../contexts/AuthContext';
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const {isLoggedIn} = useContext(AuthContext)
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50">
@@ -38,24 +40,29 @@ const Navbar = () => {
             >
               Admin Dashboard
             </Link>
-            <Link
-              to="/profile"
-              className="text-gray-200 hover:bg-white/20 px-4 py-2 rounded-lg transition"
-            >
-              <UserCircleIcon className="h-6 w-6" />
-            </Link>
-            <Link
-              to="/login"
-              className="text-gray-200 hover:bg-white/20 px-4 py-2 rounded-lg transition"
-            >
-              Login
-            </Link>
-            <Link
-              to="/signup"
-              className="text-gray-900 bg-white hover:bg-gray-200 px-4 py-2 rounded-lg transition"
-            >
-              Sign Up
-            </Link>
+
+            {
+              isLoggedIn ?
+            
+                <Link
+                  to="/profile"
+                  className="text-gray-200 hover:bg-white/20 px-4 py-2 rounded-lg transition">
+                  <UserCircleIcon className="h-6 w-6" />
+                </Link>
+              :
+                <div>       
+                  <Link
+                    to="/login"
+                    className="text-gray-200 hover:bg-white/20 px-4 py-2 rounded-lg transition">
+                    Login
+                  </Link>
+                  <Link
+                    to="/signup"
+                    className="text-gray-900 bg-white hover:bg-gray-200 px-4 py-2 rounded-lg transition">
+                    Sign Up
+                  </Link>
+                </div>   
+            }
           </div>
 
           <div className="md:hidden">

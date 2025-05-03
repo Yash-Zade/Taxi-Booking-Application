@@ -1,19 +1,34 @@
+import axios from 'axios';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const SignupPage = () => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const base_url = 'http://localhost:8080';
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission (e.g., registration logic)
-    if (password !== confirmPassword) {
-      console.log("Passwords don't match");
-      return;
+    try {
+        const response = await axios.post(`${base_url}/auth/signup`, {
+            name,
+            email,
+            password,
+        });
+        
+      if(response.status === 201){
+        navigate('/login')
+      }
+      else{
+        console.log(response.data.error.message);
+        
+      }
+    }catch(e){
+      console.log("error: ",e.response.data.error.message)
     }
-    console.log({ email, password });
   };
 
   return (
@@ -23,6 +38,14 @@ const SignupPage = () => {
       </h2>
       <div className="bg-gradient-to-r from-gray-700 via-gray-600 to-gray-500 p-8 rounded-3xl shadow-2xl w-full max-w-md text-center transform transition duration-300 ease-in-out hover:scale-105">
         <form onSubmit={handleSubmit}>
+          <input
+            type="name"
+            placeholder="Enter your name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="w-full p-4 bg-gray-800 text-white rounded-lg border-none focus:outline-none focus:ring-2 focus:ring-yellow-500 mb-4"
+            required
+          />
           <input
             type="email"
             placeholder="Enter your email"
@@ -37,14 +60,6 @@ const SignupPage = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="w-full p-4 bg-gray-800 text-white rounded-lg border-none focus:outline-none focus:ring-2 focus:ring-yellow-500 mb-4"
-            required
-          />
-          <input
-            type="password"
-            placeholder="Confirm your password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            className="w-full p-4 bg-gray-800 text-white rounded-lg border-none focus:outline-none focus:ring-2 focus:ring-yellow-500 mb-6"
             required
           />
           <button
