@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const SignupPage = () => {
   const [name, setName] = useState('');
@@ -20,14 +21,15 @@ const SignupPage = () => {
         });
         
       if(response.status === 201){
+        toast.success("Registered Successfully Please Login")
         navigate('/login')
       }
       else{
-        console.log(response.data.error.message);
+        toast.error(response.data.error.message);
         
       }
     }catch(e){
-      console.log("error: ",e.response.data.error.message)
+      toast.error("error: ",e.response.data.error.message)
     }
   };
 

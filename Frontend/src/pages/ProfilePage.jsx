@@ -1,29 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
-import axios from 'axios';
-import { AuthContext } from '../contexts/AuthContext';
+
+import { UserContext } from '../contexts/UserContext';
+import RideCard from '../components/RideCard';
 
 const ProfilePage = () => {
-  const { accessToken } = useContext(AuthContext);
-  const [userProfile, setUserProfile] = useState("");
-  const base_url = 'http://localhost:8080';
-
-  const fetchProfile = async () => {
-    try {
-      const response = await axios.get(`${base_url}/rider/getMyProfile`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
-      setUserProfile(response.data);
-    } catch (err) {
-      console.error("Failed to fetch profile", err);
-    }
-  };  
-
-  useEffect(() => {
-    if (accessToken) {
-      fetchProfile();
-    }
-  }, [accessToken]);
   
+  const {userProfile} = useContext(UserContext)
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 p-6 flex flex-col items-center pt-24">
@@ -36,8 +18,8 @@ const ProfilePage = () => {
         </h3>
         <p className="text-gray-300 mb-4 text-lg">{userProfile?.data?.user?.email || "Email not available"}</p>
 
-        <button className="bg-yellow-500 text-gray-900 hover:bg-yellow-600 px-6 py-3 rounded-full text-lg font-semibold shadow-lg transform hover:scale-105 transition duration-300 ease-in-out mb-4 w-full">
-          Edit Profile
+        <button onClick={<RideCard />} className="bg-yellow-500 text-gray-900 hover:bg-yellow-600 px-6 py-3 rounded-full text-lg font-semibold shadow-lg transform hover:scale-105 transition duration-300 ease-in-out mb-4 w-full">
+          All Rides
         </button>
 
         <div className="bg-gray-800 p-4 rounded-lg shadow-xl space-y-4">

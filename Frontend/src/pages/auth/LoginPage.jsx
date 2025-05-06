@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthContext';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
@@ -23,14 +24,16 @@ const LoginPage = () => {
                 const accessToken = response.data.data.accessToken;
                 localStorage.setItem("accessToken", accessToken);
 
-                console.log("Login Successful!");
+                toast.success("Login Successful!");
                 setIsLoggedIn(true);
                 navigate("/");
             } else {
-                console.error(response.data.error);
+                toast.error(response.data.error)
+                // console.error();
             }
         } catch (error) {
-            console.error("Unable to login. Please check your credentials.", error.response.data.error.message);
+            toast.error(error.response.data.error.message)
+            // console.error("Unable to login. Please check your credentials.", );
         }
     };
 

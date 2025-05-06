@@ -20,12 +20,13 @@ const AppRoutes = () => {
         <Route path="profile" element={<ProfilePage />} />
         <Route path="book-ride" element={<BookRidePage />} />
         <Route path="nearby-drivers" element={<NearbyDriversPage />} />
+        <Route path="admin">
+          <Route path="dashboard" element={<AdminDashboard />} />
+        </Route>
       </Route>
 
       {/* Admin Dashboard with separate layout */}
-      <Route path="admin">
-        <Route path="dashboard" element={<AdminDashboard />} />
-      </Route>
+
 
       {/* Catch-all route for undefined pages */}
       <Route path="*" element={<h1>404 - Page Not Found</h1>} />
