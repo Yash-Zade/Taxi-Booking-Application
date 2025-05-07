@@ -8,6 +8,7 @@ import ProfilePage from '../pages/ProfilePage';
 import BookRidePage from '../pages/BookRidePage';
 import NearbyDriversPage from '../pages/NearbyDriversPage';
 import AdminDashboard from '../pages/admin/AdminDashboard';
+import AllRidesPage from '../pages/AllRidesPage';
 
 const AppRoutes = () => {
   return (
@@ -20,6 +21,7 @@ const AppRoutes = () => {
         <Route path="profile" element={<ProfilePage />} />
         <Route path="book-ride" element={<BookRidePage />} />
         <Route path="nearby-drivers" element={<NearbyDriversPage />} />
+        <Route path="all-rides" element={<AllRidesPage />} />
         <Route path="admin">
           <Route path="dashboard" element={<AdminDashboard />} />
         </Route>

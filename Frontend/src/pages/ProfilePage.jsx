@@ -1,9 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext} from 'react';
 
 import { UserContext } from '../contexts/UserContext';
-import RideCard from '../components/RideCard';
+import { useNavigate } from 'react-router-dom';
 
 const ProfilePage = () => {
+
+  const navigate = useNavigate();
   
   const {userProfile} = useContext(UserContext)
 
@@ -18,7 +20,7 @@ const ProfilePage = () => {
         </h3>
         <p className="text-gray-300 mb-4 text-lg">{userProfile?.data?.user?.email || "Email not available"}</p>
 
-        <button onClick={<RideCard />} className="bg-yellow-500 text-gray-900 hover:bg-yellow-600 px-6 py-3 rounded-full text-lg font-semibold shadow-lg transform hover:scale-105 transition duration-300 ease-in-out mb-4 w-full">
+        <button onClick={() => navigate('/all-rides')} className="bg-yellow-500 text-gray-900 hover:bg-yellow-600 px-6 py-3 rounded-full text-lg font-semibold shadow-lg transform hover:scale-105 transition duration-300 ease-in-out mb-4 w-full">
           All Rides
         </button>
 

@@ -1,58 +1,43 @@
 import React from 'react';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import AppButton from './AppButton';
 
-function RideCard({ ride }) {
+const RideCard = ({ ride }) => {
+  const formatDate = (iso) => new Date(iso).toLocaleString();
+
   return (
-    <Card className="shadow-md rounded-2xl w-full">
-      <CardHeader>
-        <CardTitle className="flex justify-between items-center">
-          <span>Ride ID: {ride.id}</span>
-          <Badge
-            className={
-              ride.rideStatus === 'COMPLETED'
-                ? 'bg-green-500'
-                : ride.rideStatus === 'CANCELED'
-                ? 'bg-red-500'
-                : 'bg-yellow-500'
-            }
-          >
-            {ride.rideStatus}
-          </Badge>
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-2 gap-4 text-sm text-gray-700">
-          <div>
-            <strong>Pickup:</strong>{' '}
-            {formatCoordinates(ride.pickupLocation?.coordinates)}
-          </div>
-          <div>
-            <strong>Drop-off:</strong>{' '}
-            {formatCoordinates(ride.dropOffLocation?.coordinates)}
-          </div>
-          <div>
-            <strong>Date:</strong>{' '}
-            {new Date(ride.createdTime).toLocaleString()}
-          </div>
-          <div>
-            <strong>Fare:</strong> ₹{ride.fare}
-          </div>
-          <div>
-            <strong>Driver:</strong> {ride.driver?.user?.name || 'N/A'}
-          </div>
-          <div>
-            <strong>Payment:</strong> {ride.paymentMethod}
-          </div>
+    <div className="bg-white shadow-md rounded-2xl p-4 mb-4 border border-gray-200">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
+        <div className="mb-2 md:mb-0">
+          <p className="text-sm text-gray-500">Pickup</p>
+          <p className="text-lg font-semibold">
+            {ride.pickupLocation?.coordinates}
+          </p>
         </div>
-      </CardContent>
-    </Card>
-  );
-}
+        <div className="mb-2 md:mb-0">
+          <p className="text-sm text-gray-500">Dropoff</p>
+          <p className="text-lg font-semibold">
+            {ride.dropOffLocation?.coordinates}
+          </p>
+        </div>
+        <div>
+          <p className="text-sm text-gray-500">Fare</p>
+          <p className="text-lg font-semibold">₹ {ride.fare}</p>
+        </div>
+      </div>
 
-function formatCoordinates(coordinates) {
-  if (!coordinates || coordinates.length < 2) return 'N/A';
-  return `${coordinates[1]}, ${coordinates[0]}`; // assuming [longitude, latitude]
-}
+      <div className="mt-4 flex flex-wrap gap-2 text-sm text-gray-600">
+        <span>Status: <strong>{ride.rideStatus}</strong></span>
+        <span>Created: {formatDate(ride.createdTime)}</span>
+        {ride.startedTime && <span>Started: {formatDate(ride.startedTime)}</span>}
+        {ride.endedTime && <span>Ended: {formatDate(ride.endedTime)}</span>}
+      </div>
+
+      <div className="mt-4 flex justify-end gap-3">
+        <AppButton>Track Ride</AppButton>
+        <AppButton className="bg-gray-100 text-black hover:bg-gray-200">Invoice</AppButton>
+      </div>
+    </div>
+  );
+};
 
 export default RideCard;
