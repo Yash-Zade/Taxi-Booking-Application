@@ -9,7 +9,7 @@ const SignupPage = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const base_url = 'http://localhost:8080';
+  const base_url =  import.meta.env.VITE_BASE_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();

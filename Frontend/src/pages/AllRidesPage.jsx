@@ -8,7 +8,7 @@ const AllRidesPage = () => {
   const [rides, setRides] = useState([]);
   const [loading, setLoading] = useState(true);
   const {accessToken} = useContext(AuthContext);
-  const base_url = 'http://localhost:8080';
+  const base_url =  import.meta.env.VITE_BASE_URL;
 
 
   const fetchRides = async () => {

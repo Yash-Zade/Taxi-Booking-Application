@@ -9,8 +9,7 @@ export const UserProvider = ({children}) =>{
 
     const { accessToken } = useContext(AuthContext);
     const [userProfile, setUserProfile] = useState(null);
-    const base_url = 'http://localhost:8080';
-  
+    const base_url =  import.meta.env.VITE_BASE_URL;
     const fetchProfile = async () => {
       try {
         const response = await axios.get(`${base_url}/rider/getMyProfile`, {

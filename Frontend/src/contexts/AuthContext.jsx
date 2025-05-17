@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
     const [accessToken, setAccessToken] = useState(localStorage.getItem('accessToken') || '');
     const [isLoggedIn, setIsLoggedIn] = useState(!!accessToken);
     const navigate = useNavigate();
-    const base_url = 'http://localhost:8080';
+    const base_url =  import.meta.env.VITE_BASE_URL;
 
     // Check and refresh token upon mounting
     useEffect(() => {
