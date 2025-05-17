@@ -3,12 +3,14 @@ import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthContext';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { UserContext } from '../../contexts/UserContext';
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
     const {setIsLoggedIn} = useContext(AuthContext)
+    const {setActiveRole} = useContext(UserContext);
     const base_url =  import.meta.env.VITE_BASE_URL;
 
     const handleSubmit = async (e) => {
@@ -26,6 +28,7 @@ const LoginPage = () => {
 
                 toast.success("Login Successful!");
                 setIsLoggedIn(true);
+                setActiveRole("RIDER");
                 navigate("/");
             } else {
                 toast.error(response.data.error)
