@@ -34,9 +34,11 @@ const ProfilePage = () => {
         </h3>
         <p className="text-gray-300 mb-4 text-lg">{userProfile?.data?.user?.email}</p>
 
-        <button onClick={() => navigate('/all-rides')} className="bg-yellow-500 text-gray-900 hover:bg-yellow-600 px-6 py-3 rounded-full text-lg font-semibold shadow-lg mb-4 w-full">
-          All Rides
-        </button>
+        {(activeRole === "DRIVER" || activeRole === "RIDER") && 
+          (<button onClick={() => navigate('/all-rides')} className="bg-yellow-500 text-gray-900 hover:bg-yellow-600 px-6 py-3 rounded-full text-lg font-semibold shadow-lg mb-4 w-full">
+            All Rides
+          </button>
+        )}
 
         {activeRole === "DRIVER" && (
           <button onClick={() => navigate('/ride-request')} className="bg-yellow-500 text-gray-900 hover:bg-yellow-600 px-6 py-3 rounded-full text-lg font-semibold shadow-lg mb-4 w-full">

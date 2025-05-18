@@ -2,6 +2,8 @@ import React, { useContext, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { AuthContext } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { getCoordinatesFromPlace } from "../utils/geolocationUtils";
 
 const BookRidePage = () => {
   const [pickupPlace, setPickupPlace] = useState("");
@@ -10,28 +12,9 @@ const BookRidePage = () => {
   const [rideResponse, setRideResponse] = useState(null);
   const [errorMsg, setErrorMsg] = useState("");
   const {accessToken} = useContext(AuthContext);
+  const navigate = useNavigate();
   const base_url =  import.meta.env.VITE_BASE_URL;
 
-  const getCoordinatesFromPlace = async (place) => {
-    try {
-      const res = await axios.get(`https://nominatim.openstreetmap.org/search`, {
-        params: {
-          q: place,
-          format: "json",
-          limit: 1,
-        },
-      });
-
-      if (res.data.length > 0) {
-        const { lat, lon } = res.data[0];
-        return [parseFloat(lon), parseFloat(lat)];
-      } else {
-        throw new Error("Place not found");
-      }
-    } catch (error) {
-      throw new Error("Failed to get coordinates for: " + place);
-    }
-  };
 
   const handleBookRide = async () => {
     try {
@@ -108,6 +91,11 @@ const BookRidePage = () => {
             <p><strong>Driver Name:</strong> {rideResponse.driver.user.name}</p>
             <p><strong>Driver Rating:</strong> {rideResponse.driver.rating}</p>
             <p><strong>Requested At:</strong> {new Date(rideResponse.requestTime).toLocaleString()}</p>
+            <div className="flex justify-center items-centers mt-2.5">
+              <button onClick={() => navigate('/all-rides')} className="bg-yellow-500 text-gray-900 hover:bg-yellow-600 px-6 py-3 rounded-2xl text-lg font-semibold shadow-lg mb-4 w-fit">
+                All Rides
+              </button>
+            </div>
           </div>
         )}
       </div>

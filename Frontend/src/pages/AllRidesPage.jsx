@@ -3,6 +3,8 @@ import RideCard from '../components/RideCard';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { AuthContext } from '../contexts/AuthContext';
+import { UserContext } from '../contexts/UserContext';
+
 
 const AllRidesPage = () => {
   const [rides, setRides] = useState([]);
@@ -10,10 +12,12 @@ const AllRidesPage = () => {
   const {accessToken} = useContext(AuthContext);
   const base_url =  import.meta.env.VITE_BASE_URL;
 
+const { activeRole } = useContext(UserContext);
+const role = activeRole ? activeRole.toLowerCase() : "rider";
 
   const fetchRides = async () => {
     try {
-      const response = await axios.get(`${base_url}/rider/getAllRide`, {
+      const response = await axios.get(`${base_url}/${role}/getAllRide`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
       setRides(response.data.data.content || []);
@@ -27,7 +31,7 @@ const AllRidesPage = () => {
   const handleCancel = async (rideId) => {
     try {
       const response = await axios.post(
-        `${base_url}/rider/cancelRide/${rideId}`,
+        `${base_url}/${role}/cancelRide/${rideId}`,
         {},
         {
           headers: { Authorization: `Bearer ${accessToken}` },
