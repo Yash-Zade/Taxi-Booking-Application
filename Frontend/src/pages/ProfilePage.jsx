@@ -38,10 +38,15 @@ const ProfilePage = () => {
           All Rides
         </button>
 
-        {/* Show button only for DRIVER */}
         {activeRole === "DRIVER" && (
           <button onClick={() => navigate('/ride-request')} className="bg-yellow-500 text-gray-900 hover:bg-yellow-600 px-6 py-3 rounded-full text-lg font-semibold shadow-lg mb-4 w-full">
             RideRequest
+          </button>
+        )}
+
+        {activeRole === "ADMIN" && (
+          <button onClick={() => navigate('/ride-request')} className="bg-yellow-500 text-gray-900 hover:bg-yellow-600 px-6 py-3 rounded-full text-lg font-semibold shadow-lg mb-4 w-full">
+            OnBoarding Requests
           </button>
         )}
 

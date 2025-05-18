@@ -1,7 +1,7 @@
 import React from 'react';
 import AppButton from './AppButton';
 
-const RideCard = ({ ride }) => {
+const RideCard = ({ ride, onCancel }) => {
   const formatDate = (iso) => new Date(iso).toLocaleString();
 
   return (
@@ -33,8 +33,11 @@ const RideCard = ({ ride }) => {
       </div>
 
       <div className="mt-4 flex justify-end gap-3">
-        <AppButton>Track Ride</AppButton>
-        <AppButton className="bg-gray-100 text-black hover:bg-gray-200">Invoice</AppButton>
+        {ride.rideStatus === "CONFORMED" &&<button 
+          onClick={() => onCancel(ride.id)}
+          className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-semibold">
+          Cancle Ride
+        </button>}    
       </div>
     </div>
   );

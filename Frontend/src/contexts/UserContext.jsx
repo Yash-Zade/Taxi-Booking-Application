@@ -12,15 +12,13 @@ export const UserProvider = ({children}) =>{
     const [activeRole, setActiveRole] = useState(() => localStorage.getItem("activeRole") || "");
     const base_url =  import.meta.env.VITE_BASE_URL;
     let url = null;
-    if(activeRole == "ADMIN"){
-      url = `${base_url}/admin/getMyProfile`
-    }
-    else if(activeRole == "DRIVER"){
+    if(activeRole == "DRIVER"){
       url = `${base_url}/driver/getMyProfile`
     }
     else{
       url = `${base_url}/rider/getMyProfile`
     }
+
     const fetchProfile = async () => {
       try {
         const response = await axios.get(url, {
@@ -33,10 +31,10 @@ export const UserProvider = ({children}) =>{
     };  
   
     useEffect(() => {
-      if (accessToken) {
+      if (accessToken && activeRole) {
         fetchProfile();
       }
-    }, [accessToken]);
+    }, [accessToken,activeRole]);
 
     useEffect(() => {
       if (activeRole) {

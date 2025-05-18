@@ -18,9 +18,30 @@ const AllRidesPage = () => {
       });
       setRides(response.data.data.content || []);
     } catch (err) {
-      toast.error('Failed to fetch rides');
+      toast.error(err.response.data.error.message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleCancel = async (rideId) => {
+    try {
+      const response = await axios.post(
+        `${base_url}/rider/cancelRide/${rideId}`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      );
+
+      if (response.status === 200) {
+        toast.success("Ride Cancled Successfully");
+        setRides((prevRides) =>
+          prevRides.map((ride) =>
+          ride.id === rideId ? { ...ride, rideStatus: "CANCELED" } : ride));
+      }
+    } catch (error) {
+      toast.error(error.response.data.error.message);
     }
   };
 
@@ -36,7 +57,7 @@ const AllRidesPage = () => {
       ) : rides.length === 0 ? (
         <p className="text-gray-500">No rides found.</p>
       ) : (
-        rides.map((ride) => <RideCard key={ride.id} ride={ride} />)
+        rides.map((ride) => <RideCard key={ride.id} ride={ride} onCancel={handleCancel}/>)
       )}
     </div>
   );

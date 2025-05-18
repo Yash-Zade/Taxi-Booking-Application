@@ -3,7 +3,7 @@ import axios from 'axios';
 import RideRequestCard from '../components/RideRequestCard';
 
 import { AuthContext } from '../contexts/AuthContext';
-import { UserContext } from '../contexts/UserContext';
+import { toast } from 'react-toastify';
 
 const base_url =  import.meta.env.VITE_BASE_URL;
 
@@ -12,34 +12,29 @@ const RideRequest = () => {
   const [loading, setLoading] = useState(true);
 
   const { accessToken } = useContext(AuthContext);
-  const { userProfile } = useContext(UserContext);
+
+ const fetchRideRequests = async () => {
+    try {
+      const response = await axios.get(`${base_url}/driver/getAllRideRequest`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      setRideRequests(response.data.data.content || []);
+    } catch (err) {
+      toast.error(err.response.data.error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    async function fetchRideRequests() {
-      setLoading(true);
-      try {
-        if (!userProfile?.data?.user?.roles.includes('DRIVER')) {
-          throw new Error('Not a driver');
-        }
-        // Adjust this if rideRequests are nested differently
-        setRideRequests(userProfile?.data?.rideRequests || []);
-      } catch (error) {
-        console.error(error);
-        setRideRequests([]);
-      } finally {
-        setLoading(false);
-      }
-    }
+    fetchRideRequests();
+  }, [accessToken]);
 
-    if (accessToken) {
-      fetchRideRequests();
-    }
-  }, [accessToken, userProfile]);
 
   const handleAccept = async (rideId) => {
     try {
       const response = await axios.post(
-        `${base_url}/drivers/acceptRide/${rideId}`,
+        `${base_url}/driver/acceptRide/${rideId}`,
         {},
         {
           headers: { Authorization: `Bearer ${accessToken}` },
@@ -57,14 +52,14 @@ const RideRequest = () => {
       }
     } catch (error) {
       console.error('Accept failed:', error);
-      alert('Failed to accept the ride. Please try again.');
+      toast.error(error.response.data.error.message);
     }
   };
 
   const handleReject = async (rideId) => {
     try {
       const response = await axios.post(
-        `${base_url}/drivers/rejectRide/${rideId}`,
+        `${base_url}/driver/rejectRide/${rideId}`,
         {},
         {
           headers: { Authorization: `Bearer ${accessToken}` },
@@ -81,8 +76,8 @@ const RideRequest = () => {
         );
       }
     } catch (error) {
-      console.error('Reject failed:', error);
-      alert('Failed to reject the ride. Please try again.');
+      console.log('Reject failed:', error.data);
+      toast.error(error.response.data.error.message);
     }
   };
 
