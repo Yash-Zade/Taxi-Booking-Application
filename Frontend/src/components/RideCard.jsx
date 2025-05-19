@@ -12,8 +12,7 @@ const RideCard = ({ ride, onCancel, onStart, onEnd, onRate  }) => {
   const isDriver = activeRole === "DRIVER";
   const hasRated = isDriver ? ride.hasDriverRated : ride.hasRiderRated;
 
-  useEffect(() => {
-    const fetchPlaceNames = async () => {
+   const fetchPlaceNames = async () => {
       if (ride.pickupLocation?.coordinates) {
         const place = await getPlaceFromCoordinates(
           ride.pickupLocation.coordinates[1],
@@ -31,8 +30,9 @@ const RideCard = ({ ride, onCancel, onStart, onEnd, onRate  }) => {
       }
     };
 
+  useEffect(() => {
     fetchPlaceNames();
-  }, [ride.pickupLocation, ride.dropOffLocation]);
+  }, []);
 
   return (
     <div className="bg-white shadow-md rounded-2xl p-4 mb-4 border border-gray-200">
