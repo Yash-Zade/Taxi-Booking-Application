@@ -1,40 +1,47 @@
 import axios from "axios";
+import axiosRetry from "axios-retry";
+
+axiosRetry(axios, { retries: 3, retryDelay: axiosRetry.exponentialDelay });
 
 export const getPlaceFromCoordinates = async (lat, lon) => {
   try {
     const res = await axios.get(`https://nominatim.openstreetmap.org/reverse`, {
-    params: { lat, lon, format: "json" },
+      params: { lat, lon, format: "json" },
     });
 
-    if (res.data.display_name) {
-      return res.data.display_name; // Returns formatted place name
+    if (res.data && res.data.display_name) {
+      console.log("response", res);
+      return res.data.display_name;
     } else {
-      throw new Error("Place not found");
+      console.log(`No place found for coordinates: ${lat}, ${lon}`);
+      return "Location not available";
     }
   } catch (error) {
-    throw new Error(`Failed to get place for coordinates: ${lat}, ${lon}`);
+    console.log(`Failed to get place for coordinates: ${lat}, ${lon}.`, error);
+    return "Location not available";
   }
 };
 
-
-
 export const getCoordinatesFromPlace = async (place) => {
-    try {
-      const res = await axios.get(`https://nominatim.openstreetmap.org/search`, {
-        params: {
-          q: place,
-          format: "json",
-          limit: 1,
-        },
-      });
+  try {
+    const res = await axios.get(`https://nominatim.openstreetmap.org/search`, {
+      params: {
+        q: place,
+        format: "json",
+        limit: 1,
+      },
+    });
 
-      if (res.data.length > 0) {
-        const { lat, lon } = res.data[0];
-        return [parseFloat(lon), parseFloat(lat)];
-      } else {
-        throw new Error("Place not found");
-      }
-    } catch (error) {
-      throw new Error("Failed to get coordinates for: " + place);
+    if (res.data && res.data.length > 0) {
+      const { lat, lon } = res.data[0];
+      console.log("response", res);
+      return [parseFloat(lon), parseFloat(lat)];
+    } else {
+      console.log(`Place not found: ${place}`);
+      return null;
     }
-  };
+  } catch (error) {
+    console.log(`Failed to get coordinates for place: ${place}.`, error);
+    return null;
+  }
+};

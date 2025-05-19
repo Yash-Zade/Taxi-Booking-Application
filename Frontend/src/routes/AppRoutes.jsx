@@ -10,6 +10,7 @@ import NearbyDriversPage from '../pages/NearbyDriversPage';
 import AdminDashboard from '../pages/admin/AdminDashboard';
 import AllRidesPage from '../pages/AllRidesPage';
 import RideRequest from '../pages/RideRequest';
+import StartEndRidePage from '../pages/StartEndRidePage';
 
 const AppRoutes = () => {
   return (
@@ -24,6 +25,7 @@ const AppRoutes = () => {
         <Route path="nearby-drivers" element={<NearbyDriversPage />} />
         <Route path="all-rides" element={<AllRidesPage />} />
         <Route path="ride-request" element={<RideRequest />} />
+        <Route path="start-ride" element={<StartEndRidePage />} />
         <Route path="admin">
           <Route path="dashboard" element={<AdminDashboard />} />
         </Route>

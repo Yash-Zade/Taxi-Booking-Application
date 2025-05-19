@@ -9,11 +9,10 @@ import { UserContext } from '../contexts/UserContext';
 const AllRidesPage = () => {
   const [rides, setRides] = useState([]);
   const [loading, setLoading] = useState(true);
-  const {accessToken} = useContext(AuthContext);
-  const base_url =  import.meta.env.VITE_BASE_URL;
-
-const { activeRole } = useContext(UserContext);
-const role = activeRole ? activeRole.toLowerCase() : "rider";
+  const { accessToken } = useContext(AuthContext);
+  const { activeRole } = useContext(UserContext);
+  const base_url = import.meta.env.VITE_BASE_URL;
+  const role = activeRole ? activeRole.toLowerCase() : "rider";
 
   const fetchRides = async () => {
     try {
@@ -22,7 +21,7 @@ const role = activeRole ? activeRole.toLowerCase() : "rider";
       });
       setRides(response.data.data.content || []);
     } catch (err) {
-      toast.error(err.response.data.error.message);
+      toast.error(err.response?.data?.error?.message || "Failed to load rides");
     } finally {
       setLoading(false);
     }
@@ -39,15 +38,81 @@ const role = activeRole ? activeRole.toLowerCase() : "rider";
       );
 
       if (response.status === 200) {
-        toast.success("Ride Cancled Successfully");
+        toast.success("Ride Canceled Successfully");
         setRides((prevRides) =>
           prevRides.map((ride) =>
-          ride.id === rideId ? { ...ride, rideStatus: "CANCELED" } : ride));
+            ride.id === rideId ? { ...ride, rideStatus: "CANCELED" } : ride
+          )
+        );
       }
     } catch (error) {
-      toast.error(error.response.data.error.message);
+      toast.error(error.response?.data?.error?.message || "Failed to cancel ride");
     }
   };
+
+const handleStart = async (otp, rideId) => {
+  if (!otp) return toast.warn("Enter OTP to start the ride");
+
+  try {
+    const response = await axios.post(
+      `${base_url}/driver/startRide/${rideId}`,
+      {"otp":otp},
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      }
+    );
+    if (response.status === 200) {
+      toast.success("Ride Started");
+      await fetchRides();
+    }
+  } catch (err) {
+    toast.error(err.response?.data?.error?.message || "Failed to start ride");
+  }
+};
+
+const handleEnd = async (rideId) => {
+  try {
+    const response = await axios.post(
+      `${base_url}/driver/endRide/${rideId}`,
+      {},
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      }
+    );
+    if (response.status === 200) {
+      toast.success("Ride Ended");
+      await fetchRides();
+    }
+  } catch (err) {
+    toast.error(err.response?.data?.error?.message || "Failed to end ride");
+  }
+};
+
+const handleRate = async (rideId, rating) => {
+  
+  if (!rating || rating < 1 || rating > 5) {
+    return toast.warn("Please select a valid rating");
+  }
+
+  try {
+    const response = await axios.post(
+      `${base_url}/${role}/rate`,
+      { rideId, rating },
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      }
+    );
+
+    if (response.status === 200) {
+      toast.success("Rating submitted successfully");
+      await fetchRides(); // Refresh to reflect hasRated true
+    }
+  } catch (error) {
+    toast.error(error?.response?.data?.error?.message || "Rating failed");
+  }
+};
+
+
 
   useEffect(() => {
     fetchRides();
@@ -61,7 +126,16 @@ const role = activeRole ? activeRole.toLowerCase() : "rider";
       ) : rides.length === 0 ? (
         <p className="text-gray-500">No rides found.</p>
       ) : (
-        rides.map((ride) => <RideCard key={ride.id} ride={ride} onCancel={handleCancel}/>)
+        rides.map((ride) => (
+          <RideCard
+            key={ride.id}
+            ride={ride}
+            onCancel={handleCancel}
+            onStart={handleStart}
+            onEnd={handleEnd}
+            onRate={handleRate}
+          />
+        ))
       )}
     </div>
   );
