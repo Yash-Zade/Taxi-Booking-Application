@@ -6,7 +6,7 @@ CabZilla is a full-stack taxi booking web application where riders can book ride
 
 ## 🌐 Live Demo
 
-> [_CabZilla](https://cabzilla.vercel.app/)
+> [CabZilla](https://cabzilla.vercel.app/)
 
 ---
 
