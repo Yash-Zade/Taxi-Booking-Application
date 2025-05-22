@@ -138,9 +138,8 @@ http://localhost:5173
 
 Available via Swagger UI:
 
-```bash
-http://cabzilla.koyeb.app/swagger-ui/index.html
-```
+> http://cabzilla.koyeb.app/swagger-ui/index.html
+
 
 ---
 
