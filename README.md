@@ -65,11 +65,13 @@ CabZilla/
 │   └── resources/application.properties
 │
 ├── frontend/
-│   ├── components/
-│   ├── context/
-│   ├── pages/
-│   ├── utils/
-│   └── AppRoutes.jsx
+│   └── src/
+│       ├── assets/
+│       ├── components/
+│       ├── contexts/
+│       ├── pages/
+│       ├── routes/
+│       └── utils/
 │
 └── README.md
 ```
