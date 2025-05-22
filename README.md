@@ -6,7 +6,7 @@ CabZilla is a full-stack taxi booking web application where riders can book ride
 
 ## 🌐 Live Demo
 
-> [CabZilla](https://cabzilla.vercel.app/)
+> https://cabzilla.vercel.app/
 
 ---
 
@@ -45,12 +45,10 @@ CabZilla is a full-stack taxi booking web application where riders can book ride
 - Tailwind CSS
 - Axios
 - React Router DOM
-- STOMP.js for WebSocket
 
 ### Backend
 - Spring Boot
 - Spring Security with JWT
-- Spring WebSocket
 - Spring Data JPA
 - PostgreSQL + PostGIS
 - Swagger for API documentation
@@ -141,7 +139,7 @@ http://localhost:5173
 Available via Swagger UI:
 
 ```bash
-http://localhost:8080/swagger-ui/index.html
+http://cabzilla.koyeb.app/swagger-ui/index.html
 ```
 
 ---
@@ -172,6 +170,3 @@ Final Year Computer Science Student
 
 ---
 
-```yaml
----
-```
