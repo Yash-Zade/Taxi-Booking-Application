@@ -29,7 +29,6 @@ const OnboardRequestsPage = () => {
   };
 
   const handleAccept = async (userId, request) => {
-    console.log(request)
     setLoading(true);
     try {
       const response = await axios.post(
