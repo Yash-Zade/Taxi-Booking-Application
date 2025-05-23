@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 export const StartRideCard = () => {
   const [otp, setOtp] = useState('');
@@ -14,7 +15,7 @@ export const StartRideCard = () => {
       setError('');
     } catch (err) {
       setError('Failed to start ride.');
-      console.error(err);
+      toast.error(error);
     }
   };
 

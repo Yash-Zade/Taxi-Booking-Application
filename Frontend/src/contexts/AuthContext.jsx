@@ -2,6 +2,7 @@ import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import {jwtDecode} from 'jwt-decode';
+import { toast } from 'react-toastify';
 
 // Create Authentication Context
 export const AuthContext = createContext();
@@ -40,7 +41,7 @@ export const AuthProvider = ({ children }) => {
                 setIsLoggedIn(true);
             }
         } catch (error) {
-            console.error('Error decoding token:', error);
+            toast.error('Error decoding token:', error);
             logout();
         }
     };

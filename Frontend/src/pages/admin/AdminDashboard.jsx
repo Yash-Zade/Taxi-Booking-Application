@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../../contexts/AuthContext';
+import { toast } from 'react-toastify';
 
 const AdminDashboard = () => {
   const base_url = import.meta.env.VITE_BASE_URL;
@@ -34,7 +35,7 @@ const AdminDashboard = () => {
           pendingRequests: requestsRes.data.data,
         });
       } catch (error) {
-        console.error('Error fetching admin dashboard stats:', error);
+        toast.error('Error fetching admin dashboard stats:', error);
       }
     };
 

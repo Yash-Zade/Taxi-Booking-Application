@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 export const EndRideCard = () => {
   const [rideId, setRideId] = useState('');
@@ -14,7 +15,7 @@ export const EndRideCard = () => {
       setError('');
     } catch (err) {
       setError('Failed to end ride.');
-      console.error(err);
+      toast.error(error);
     }
   };
 

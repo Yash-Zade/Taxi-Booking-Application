@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import Rating from './Rating'; // Assuming this renders stars and accepts props
+import { toast } from 'react-toastify';
 
 const DriverCard = ({ driver }) => {
   const [driverRating, setDriverRating] = useState(driver.rating);
 
   const handleRate = (newRating) => {
     setDriverRating(newRating);
-    console.log(`User rated ${driver.name} with ${newRating} stars`);
-    // Optionally send this rating to the backend
+    toast.log(`User rated ${driver.name} with ${newRating} stars`);
   };
 
   return (

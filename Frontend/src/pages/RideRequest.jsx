@@ -46,7 +46,6 @@ const RideRequest = () => {
         );
       }
     } catch (error) {
-      console.error('Accept failed:', error);
       toast.error(error.response?.data?.error?.message || 'Accept failed');
     }
   };
@@ -67,7 +66,6 @@ const RideRequest = () => {
         );
       }
     } catch (error) {
-      console.log('Reject failed:', error);
       toast.error(error.response?.data?.error?.message || 'Reject failed');
     }
   };

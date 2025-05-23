@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 
 export const UserContext = createContext();
@@ -26,7 +27,7 @@ export const UserProvider = ({children}) =>{
         });
         setUserProfile(response.data);
       } catch (err) {
-        console.error("Failed to fetch profile", err);
+        toast.error("Failed to fetch profile", err);
       }
     };  
   
