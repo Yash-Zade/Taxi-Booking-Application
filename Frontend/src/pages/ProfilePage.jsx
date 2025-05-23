@@ -60,7 +60,7 @@ const ProfilePage = () => {
 
         {activeRole === 'ADMIN' && (
           <button
-            onClick={() => navigate('/ride-request')}
+            onClick={() => navigate('/manage-request')}
             className="bg-yellow-500 text-white hover:bg-yellow-600 px-6 py-3 rounded-full text-lg font-semibold shadow-md mb-4 w-full transition duration-300 ease-in-out transform hover:scale-105"
           >
             OnBoarding Requests

@@ -9,6 +9,8 @@ import BookRidePage from '../pages/BookRidePage';
 import AdminDashboard from '../pages/admin/AdminDashboard';
 import AllRidesPage from '../pages/AllRidesPage';
 import RideRequest from '../pages/RideRequest';
+import OnboardRequests from '../pages/admin/OnboardRequestsPage.jsx';
+import RequestDriver from '../pages/RequestDriver.jsx';
 
 const AppRoutes = () => {
   return (
@@ -22,9 +24,9 @@ const AppRoutes = () => {
         <Route path="book-ride" element={<BookRidePage />} />
         <Route path="all-rides" element={<AllRidesPage />} />
         <Route path="ride-request" element={<RideRequest />} />
-        <Route path="admin">
-          <Route path="dashboard" element={<AdminDashboard />} />
-        </Route>
+        <Route path="dashboard" element={<AdminDashboard />} />
+        <Route path="manage-request" element={<OnboardRequests />} />
+        <Route path="request-driver" element={<RequestDriver />} />
       </Route>
 
       {/* Admin Dashboard with separate layout */}

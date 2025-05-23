@@ -7,7 +7,8 @@ import { UserContext } from '../contexts/UserContext';
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { isLoggedIn } = useContext(AuthContext);
-  const { activeRole } = useContext(UserContext);
+  const { activeRole, userProfile } = useContext(UserContext);
+  const roles = userProfile?.data?.user?.roles || [];
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50">
@@ -46,6 +47,16 @@ const Navbar = () => {
               </>
             )}
 
+            { isLoggedIn && !roles.includes("DRIVER") && (
+              <Link
+                to="/request-driver"
+                className="text-gray-800 hover:text-yellow-600 px-4 py-2 rounded-lg transition font-medium"
+              >
+                Request to be Driver
+              </Link>
+            )}
+
+
             {/* Driver-only routes */}
             {isLoggedIn && activeRole === 'DRIVER' && (
               <>
@@ -69,7 +80,7 @@ const Navbar = () => {
             {/* Admin-only routes */}
             {isLoggedIn && activeRole === 'ADMIN' && (
               <Link
-                to="/admin/dashboard"
+                to="/dashboard"
                 className="text-gray-800 hover:text-yellow-600 px-4 py-2 rounded-lg transition font-medium"
               >
                 Admin Dashboard
