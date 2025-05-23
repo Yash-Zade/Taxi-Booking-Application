@@ -71,7 +71,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Long getTotalRiders() {
-        return userRepository.countByRoles(Role.DRIVER);
+        return userRepository.countByRoles(Role.RIDER);
     }
     @Override
     public Long getTotalDrivers() {
