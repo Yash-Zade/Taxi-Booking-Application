@@ -1,9 +1,6 @@
 package com.project.taxibookingapp.services;
 
-import com.project.taxibookingapp.dto.DriverDto;
-import com.project.taxibookingapp.dto.RideDto;
-import com.project.taxibookingapp.dto.RideRequestDto;
-import com.project.taxibookingapp.dto.RiderDto;
+import com.project.taxibookingapp.dto.*;
 import com.project.taxibookingapp.entities.Rider;
 import com.project.taxibookingapp.entities.User;
 import org.springframework.data.domain.Page;
@@ -19,4 +16,5 @@ public interface RiderService {
     Page<RideDto> getAllRide(PageRequest pageRequest);
     Rider createNewRider(User user);
     Rider getCurrentRider();
+    Void requestOnboard(OnBoardNewDriverDto onBoardNewDriverDto);
 }

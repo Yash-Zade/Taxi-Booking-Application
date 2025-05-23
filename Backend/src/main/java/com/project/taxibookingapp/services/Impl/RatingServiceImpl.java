@@ -16,7 +16,6 @@ import com.project.taxibookingapp.services.RatingService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +25,7 @@ public class RatingServiceImpl implements RatingService {
     private final RiderRepository riderRepository;
     private final DriverRepository driverRepository;
     private final ModelMapper modelMapper;
+    private final RideRepository rideRepository;
 
     @Override
     public RiderDto rateRider(Ride ride, Double rating) {
@@ -41,6 +41,8 @@ public class RatingServiceImpl implements RatingService {
                 .mapToDouble(Rating::getRiderRating)
                 .average().orElse(0.0);
         rider.setRating(newRating);
+        ride.setHasDriverRated(true);
+        rideRepository.save(ride);
         Rider savedRider=riderRepository.save(rider);
         return modelMapper.map(savedRider,RiderDto.class);
     }
@@ -59,12 +61,16 @@ public class RatingServiceImpl implements RatingService {
                 .mapToDouble(Rating::getDriverRating)
                 .average().orElse(0.0);
         driver.setRating(newRating);
+        ride.setHasRiderRated(true);
+        rideRepository.save(ride);
         Driver savedDriver=driverRepository.save(driver);
         return modelMapper.map(savedDriver, DriverDto.class);
     }
 
     @Override
     public void creatNewRating(Ride ride) {
+        ride.setHasRiderRated(false);
+        ride.setHasDriverRated(false);
         Rating rating=Rating.builder()
                 .driver(ride.getDriver())
                 .ride(ride)

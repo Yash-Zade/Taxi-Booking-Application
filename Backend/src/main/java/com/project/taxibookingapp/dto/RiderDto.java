@@ -12,4 +12,5 @@ public class RiderDto{
     private Long id;
     private UserDto user;
     private Double rating;
+    private RideRequestDto rideRequest;
 }

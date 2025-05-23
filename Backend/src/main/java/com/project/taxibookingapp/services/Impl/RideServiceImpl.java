@@ -9,6 +9,7 @@ import com.project.taxibookingapp.entities.enums.RideRequestStatus;
 import com.project.taxibookingapp.entities.enums.RideStatus;
 import com.project.taxibookingapp.exceptions.ResourceNotFoundException;
 import com.project.taxibookingapp.repositories.RideRepository;
+import com.project.taxibookingapp.services.EmailSenderService;
 import com.project.taxibookingapp.services.RideRequestService;
 import com.project.taxibookingapp.services.RideService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,8 @@ public class RideServiceImpl implements RideService {
     private final RideRepository rideRepository;
     private final RideRequestService rideRequestService;
     private final ModelMapper modelMapper;
+    private final EmailSenderService emailSenderService;
+
     @Override
     public Ride getRideById(Long rideId) {
         return rideRepository.findById(rideId)
@@ -39,12 +42,15 @@ public class RideServiceImpl implements RideService {
 
     @Override
     public Ride createNewRide(RideRequest rideRequest, Driver driver) {
+        String otp = generateRandomOtp();
         rideRequest.setRideRequestStatus(RideRequestStatus.CONFORMED);
         Ride ride = modelMapper.map(rideRequest,Ride.class);
         ride.setRideStatus(RideStatus.CONFORMED);
         ride.setDriver(driver);
-        ride.setOtp(generateRandomOtp());
+        ride.setOtp(otp);
         ride.setId(null);
+
+        emailSenderService.sendEmail(rideRequest.getRider().getUser().getEmail(), "Your Taxi Booking OTP", "Your OTP is: " + otp);
 
         rideRequestService.update(rideRequest);
         return rideRepository.save(ride);

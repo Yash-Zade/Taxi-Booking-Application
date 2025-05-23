@@ -1,13 +1,11 @@
 package com.project.taxibookingapp.services.Impl;
 
-import com.project.taxibookingapp.dto.DriverDto;
-import com.project.taxibookingapp.dto.RideDto;
-import com.project.taxibookingapp.dto.RideRequestDto;
-import com.project.taxibookingapp.dto.RiderDto;
+import com.project.taxibookingapp.dto.*;
 import com.project.taxibookingapp.entities.*;
 import com.project.taxibookingapp.entities.enums.RideRequestStatus;
 import com.project.taxibookingapp.entities.enums.RideStatus;
 import com.project.taxibookingapp.exceptions.ResourceNotFoundException;
+import com.project.taxibookingapp.repositories.OnBoardNewDriverRepository;
 import com.project.taxibookingapp.repositories.RideRequestRepository;
 import com.project.taxibookingapp.repositories.RiderRepository;
 import com.project.taxibookingapp.services.*;
@@ -36,6 +34,7 @@ public class RiderServiceImpl implements RiderService {
     private final RideService rideService;
     private final DriverService driverService;
     private final RatingService ratingService;
+    private final OnBoardNewDriverRepository onBoardNewDriverRepository;
 
     @Override
     @Transactional
@@ -47,10 +46,17 @@ public class RiderServiceImpl implements RiderService {
         rideRequest.setRider(rider);
         Double fare= rideStrategyManager.rideFareCalculationStrategy().calculateFair(rideRequest);
         rideRequest.setFare(fare);
+        List<Driver> matchingDrivers = rideStrategyManager
+                .driverMatchingStrategy(rider.getRating())
+                .findMatchingDrivers(rideRequest);
+
+        if (matchingDrivers != null && !matchingDrivers.isEmpty()) {
+            rideRequest.setDriver(matchingDrivers.get(0));
+        } else {
+            throw new RuntimeException("No suitable driver found for the ride request.");
+        }
 
         RideRequest savedRideRequest = rideRequestRepository.save(rideRequest);
-
-        rideStrategyManager.driverMatchingStrategy(rider.getRating()).findMatchingDrivers(rideRequest);
 
         return modelMapper.map(savedRideRequest,RideRequestDto.class);
     }
@@ -116,5 +122,11 @@ public class RiderServiceImpl implements RiderService {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return riderRepository.findByUser(user).orElseThrow(()-> new ResourceNotFoundException("Rider not associated with user with id: "+ user.getId()));
 
+    }
+
+    @Override
+    public Void requestOnboard(OnBoardNewDriverDto onBoardNewDriverDto) {
+        onBoardNewDriverRepository.save(modelMapper.map(onBoardNewDriverDto, OnBoardNewDriver.class));
+        return null;
     }
 }

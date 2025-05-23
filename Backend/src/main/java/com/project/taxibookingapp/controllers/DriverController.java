@@ -11,10 +11,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "https://cabzilla.up.railway.app")
+import java.util.List;
+
+@CrossOrigin(origins = "https://cabzilla.vercel.app/")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/drivers")
+@RequestMapping("/driver")
 @Secured("ROLE_DRIVER")
 public class DriverController {
 
@@ -40,7 +42,7 @@ public class DriverController {
         return ResponseEntity.ok(driverService.cancelRide(rideId));
     }
 
-    @PostMapping(path = "/rateRider")
+    @PostMapping(path = "/rate")
     public ResponseEntity<RiderDto> rateRider(@RequestBody RatingDto ratingDto) {
         return ResponseEntity.ok(driverService.rateRider(ratingDto.getRideId(), ratingDto.getRating()));
     }
@@ -55,6 +57,14 @@ public class DriverController {
                                                     @RequestParam(defaultValue = "10", required = false) Integer pageSize) {
         PageRequest pageRequest = PageRequest.of(pageOffset, pageSize, Sort.by(Sort.Direction.DESC, "createdTime", "id"));
         return ResponseEntity.ok(driverService.getAllRide(pageRequest));
+    }
+
+    @GetMapping(path = "/getAllRideRequest")
+    public ResponseEntity<Page<RideRequestDto>> getAllRideRequest(@RequestParam(defaultValue = "0") Integer pageOffset,
+                                                                  @RequestParam(defaultValue = "10", required = false) Integer pageSize) {
+        PageRequest pageRequest = PageRequest.of(pageOffset, pageSize, Sort.by(Sort.Direction.DESC, "requestTime", "id"));
+
+        return ResponseEntity.ok(driverService.getAllRideRequest(pageRequest));
     }
 }
 

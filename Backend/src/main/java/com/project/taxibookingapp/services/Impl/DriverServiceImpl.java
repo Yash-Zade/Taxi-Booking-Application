@@ -2,6 +2,7 @@ package com.project.taxibookingapp.services.Impl;
 
 import com.project.taxibookingapp.dto.DriverDto;
 import com.project.taxibookingapp.dto.RideDto;
+import com.project.taxibookingapp.dto.RideRequestDto;
 import com.project.taxibookingapp.dto.RiderDto;
 import com.project.taxibookingapp.entities.Driver;
 import com.project.taxibookingapp.entities.Ride;
@@ -11,6 +12,7 @@ import com.project.taxibookingapp.entities.enums.RideRequestStatus;
 import com.project.taxibookingapp.entities.enums.RideStatus;
 import com.project.taxibookingapp.exceptions.ResourceNotFoundException;
 import com.project.taxibookingapp.repositories.DriverRepository;
+import com.project.taxibookingapp.repositories.RideRequestRepository;
 import com.project.taxibookingapp.services.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -20,7 +22,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +33,7 @@ public class DriverServiceImpl implements DriverService {
     private final ModelMapper modelMapper;
     private final PaymentService paymentService;
     private final RatingService ratingService;
+    private final RideRequestRepository rideRequestRepository;
 
     @Override
     public RideDto acceptRide(Long rideRequestId) {
@@ -145,5 +147,13 @@ public class DriverServiceImpl implements DriverService {
     @Override
     public Driver createNewDriver(Driver driver) {
         return driverRepository.save(driver);
+    }
+
+    @Override
+    public Page<RideRequestDto> getAllRideRequest(PageRequest pageRequest) {
+        Driver driver=getCurrentDriver();
+        return rideRequestRepository.findByDriver(driver, pageRequest).map(
+                rideRequest -> modelMapper.map(rideRequest, RideRequestDto.class)
+        );
     }
 }

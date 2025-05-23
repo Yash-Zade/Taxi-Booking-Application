@@ -30,7 +30,6 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final RiderService riderService;
     private final WalletService walletService;
-    private final DriverService driverService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JWTService jwtService;
@@ -38,11 +37,16 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String[] login(String email, String password) {
-        Authentication authentication= authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email,password));
-        User user= (User) authentication.getPrincipal();
-        String accessToken = jwtService.generateAccessToken(user);
-        String refreshToken = jwtService.generateRefreshToken(user);
-        return new String[]{accessToken, refreshToken};
+        try{
+            Authentication authentication= authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email,password));
+            User user= (User) authentication.getPrincipal();
+            String accessToken = jwtService.generateAccessToken(user);
+            String refreshToken = jwtService.generateRefreshToken(user);
+            return new String[]{accessToken, refreshToken};
+        }catch (Exception e){
+            throw new ResourceNotFoundException("Invalid email or password");
+        }
+
     }
 
     @Override
@@ -63,24 +67,6 @@ public class AuthServiceImpl implements AuthService {
         walletService.cerateNewWallet(savedUser);
 
         return modelMapper.map(savedUser, UserDto.class);
-    }
-
-    @Override
-    public DriverDto onboardNewDriver(Long userId,String vehicleId) {
-        User user=userRepository.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User not found with id: "+userId));
-        if(user.getRoles().contains(Role.DRIVER)){
-            throw new RuntimeConflictException("user with id: "+userId+" is already a driver");
-        }
-        Driver createDriver=Driver.builder()
-                .user(user)
-                .vehicleId(vehicleId)
-                .rating(0.0)
-                .available(true)
-                .build();
-        user.getRoles().add(Role.DRIVER);
-        userRepository.save(user);
-        Driver savedDriver = driverService.createNewDriver(createDriver);
-        return modelMapper.map(savedDriver, DriverDto.class);
     }
 
     @Override

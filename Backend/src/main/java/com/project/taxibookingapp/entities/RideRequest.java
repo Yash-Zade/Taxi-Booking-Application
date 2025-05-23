@@ -29,7 +29,7 @@ public class RideRequest {
     @CurrentTimestamp
     private LocalDateTime requestTime;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     private Rider rider;
 
     @Enumerated(EnumType.STRING)
@@ -37,6 +37,9 @@ public class RideRequest {
 
     @Enumerated(EnumType.STRING)
     private RideRequestStatus rideRequestStatus;
+
+    @ManyToOne()
+    private Driver driver;
 
     private Double fare;
 }

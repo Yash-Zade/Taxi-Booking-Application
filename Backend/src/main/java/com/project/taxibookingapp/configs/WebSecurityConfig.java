@@ -28,7 +28,7 @@ public class WebSecurityConfig {
                         .requestMatchers(PUBLIC_ROUTES).permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .cors(); // Enable CORS
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()));
 
         return httpSecurity.build();
     }

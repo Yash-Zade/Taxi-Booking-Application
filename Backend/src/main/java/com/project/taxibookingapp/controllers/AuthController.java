@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 
-@CrossOrigin(origins = "https://cabzilla.up.railway.app")
+@CrossOrigin(origins = "https://cabzilla.vercel.app")
 @RestController
 @RequestMapping(path="/auth")
 @RequiredArgsConstructor
@@ -27,17 +27,13 @@ public class AuthController {
         return new ResponseEntity<>(authService.signup(signupDto), HttpStatus.CREATED);
     }
 
-    @Secured("ROLE_ADMIN")
-    @PostMapping(path="onBoardNewDriver/{userId}")
-    public ResponseEntity<DriverDto> onBoardNewDriver(@PathVariable Long userId,@RequestBody OnBoardNewDriverDto onBoardNewDriverDto){
-        return new ResponseEntity<>(authService.onboardNewDriver(userId, onBoardNewDriverDto.getVehicleId()),HttpStatus.CREATED);
-    }
-
     @PostMapping(path = "/login")
     public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response){
         String[] tokens = authService.login(loginRequestDto.getEmail(), loginRequestDto.getPassword());
-        Cookie cookie = new Cookie("token",tokens[1]);
+        Cookie cookie = new Cookie("refreshToken",tokens[1]);
         cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setMaxAge(6 * 30 * 24 * 60 * 60);
         response.addCookie(cookie);
         return ResponseEntity.ok(new LoginResponseDto(tokens[0]));
     }

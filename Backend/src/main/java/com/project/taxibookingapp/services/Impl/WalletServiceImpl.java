@@ -1,8 +1,6 @@
 package com.project.taxibookingapp.services.Impl;
 
-import com.project.taxibookingapp.dto.RideDto;
-import com.project.taxibookingapp.dto.WalletDto;
-import com.project.taxibookingapp.dto.WalletTransactionDto;
+
 import com.project.taxibookingapp.entities.Ride;
 import com.project.taxibookingapp.entities.User;
 import com.project.taxibookingapp.entities.Wallet;
@@ -13,7 +11,6 @@ import com.project.taxibookingapp.exceptions.ResourceNotFoundException;
 import com.project.taxibookingapp.repositories.WalletRepository;
 import com.project.taxibookingapp.services.WalletService;
 import com.project.taxibookingapp.services.WalletTransactionService;
-import jakarta.transaction.Transaction;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;

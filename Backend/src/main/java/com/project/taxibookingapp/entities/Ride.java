@@ -47,4 +47,9 @@ public class Ride {
     private LocalDateTime startedTime;
 
     private LocalDateTime endedTime;
+
+    private boolean hasRiderRated;
+
+    private boolean hasDriverRated;
+
 }

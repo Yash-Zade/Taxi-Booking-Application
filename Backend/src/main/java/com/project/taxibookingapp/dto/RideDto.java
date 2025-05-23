@@ -21,4 +21,7 @@ public class RideDto {
     private LocalDateTime startedTime;
     private LocalDateTime endedTime;
     private String otp;
+    private boolean hasRiderRated;
+    private boolean hasDriverRated;
+
 }
