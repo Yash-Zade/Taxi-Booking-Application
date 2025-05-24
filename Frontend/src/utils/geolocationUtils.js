@@ -13,11 +13,11 @@ export const getPlaceFromCoordinates = async (lat, lon) => {
     if (res.data && res.data.display_name) {
       return res.data.display_name;
     } else {
-      toast.log(`No place found for coordinates: ${lat}, ${lon}`);
+      toast.error(`No place found for coordinates: ${lat}, ${lon}`);
       return "Location not available";
     }
   } catch (error) {
-    toast.log(`Failed to get place for coordinates: ${lat}, ${lon}.`, error);
+    toast.error(`Failed to get place for coordinates: ${lat}, ${lon}.`, error);
     return "Location not available";
   }
 };
@@ -34,14 +34,13 @@ export const getCoordinatesFromPlace = async (place) => {
 
     if (res.data && res.data.length > 0) {
       const { lat, lon } = res.data[0];
-      toast.log("response", res);
       return [parseFloat(lon), parseFloat(lat)];
     } else {
-      toast.log(`Place not found: ${place}`);
+      toast.error(`Place not found: ${place}`);
       return null;
     }
   } catch (error) {
-    toast.log(`Failed to get coordinates for place: ${place}.`, error);
+    toast.error(`Failed to get coordinates for place: ${place}.`, error);
     return null;
   }
 };
