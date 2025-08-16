@@ -11,7 +11,7 @@ const AllRidesPage = () => {
   const { accessToken } = useContext(AuthContext);
   const { activeRole } = useContext(UserContext);
   const base_url = import.meta.env.VITE_BASE_URL;
-  const role = activeRole ? activeRole.toLowerCase() : "rider";
+  const role = activeRole.toLowerCase();
 
   const fetchRides = async () => {
     try {
